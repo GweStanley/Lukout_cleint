@@ -41,7 +41,7 @@ export default function HeroCarousel() {
 
   // Auto-slide every 6 seconds
   useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6000);
+    const timer = setInterval(() => setIndex((i) => (i + 1) % slides.length), 15000);
     return () => clearInterval(timer);
   }, []);
 
@@ -55,6 +55,9 @@ export default function HeroCarousel() {
         borderRadius: "14px",
         overflow: "hidden",
         boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
+      paddingLeft: "10px",   
+      paddingRight: "10px",  
+      boxSizing: "border-box", 
       }}
     >
       {/* Image */}
