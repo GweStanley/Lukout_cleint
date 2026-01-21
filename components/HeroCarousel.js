@@ -28,24 +28,20 @@ const slides = [
     text: "Get to a rescue team in one click. ",
     primaryBtn: { label: "Call Help", href: "/main/support" },
   },
-    {
+  {
     image: "/images/firstAidkit.jpg",
-    title: "Are Your a First Respondent? ",
-    text: "Access Basic First Aid Tips Here. Your little actions can save lives ",
+    title: "Are You a First Respondent?",
+    text: "Access Basic First Aid Tips Here. Your little actions can save lives.",
     primaryBtn: { label: "First Aid Tips", href: "/main/support" },
   },
-
-
 ];
 
 export default function HeroCarousel() {
   const [index, setIndex] = useState(0);
 
-  // Auto slide
+  // Auto-slide every 6 seconds
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % slides.length);
-    }, 6000);
+    const timer = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -67,7 +63,7 @@ export default function HeroCarousel() {
         alt={slide.title}
         style={{
           width: "100%",
-          height: "485px",
+          height: "clamp(220px, 45vh, 485px)", // responsive height
           objectFit: "cover",
           filter: "brightness(0.55)",
           transition: "opacity 0.6s ease",
@@ -82,46 +78,58 @@ export default function HeroCarousel() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "30px",
+          padding: "clamp(15px, 5vw, 30px)",
           color: "#fff",
         }}
       >
-        <h1 style={{ fontSize: "2.2rem", marginBottom: 12 }}>
+        <h1
+          style={{
+            fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
+            marginBottom: "0.75rem",
+          }}
+        >
           {slide.title}
         </h1>
 
-        <p style={{ fontSize: "1.1rem", maxWidth: 420, marginBottom: 20 }}>
+        <p
+          style={{
+            fontSize: "clamp(0.85rem, 2.5vw, 1.1rem)",
+            maxWidth: "100%",
+            marginBottom: "1rem",
+          }}
+        >
           {slide.text}
         </p>
 
         {/* Buttons */}
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "clamp(6px,2vw,12px)", flexWrap: "wrap" }}>
           {slide.primaryBtn && (
             <a
               href={slide.primaryBtn.href}
               style={{
                 background: "#1cce9f",
                 color: "#fff",
-                padding: "12px 22px",
-                borderRadius: 8,
+                padding: "clamp(8px,2vw,12px) clamp(16px,4vw,22px)",
+                borderRadius: "8px",
                 fontWeight: 600,
                 textDecoration: "none",
+                fontSize: "clamp(0.75rem,2vw,0.95rem)",
               }}
             >
               {slide.primaryBtn.label}
             </a>
           )}
-
           {slide.secondaryBtn && (
             <a
               href={slide.secondaryBtn.href}
               style={{
                 background: "#e74c3c",
                 color: "#fff",
-                padding: "12px 22px",
-                borderRadius: 8,
+                padding: "clamp(8px,2vw,12px) clamp(16px,4vw,22px)",
+                borderRadius: "8px",
                 fontWeight: 600,
                 textDecoration: "none",
+                fontSize: "clamp(0.75rem,2vw,0.95rem)",
               }}
             >
               {slide.secondaryBtn.label}
@@ -134,11 +142,11 @@ export default function HeroCarousel() {
       <div
         style={{
           position: "absolute",
-          bottom: 15,
+          bottom: "clamp(8px,2vh,15px)",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
-          gap: 8,
+          gap: "8px",
         }}
       >
         {slides.map((_, i) => (
@@ -146,8 +154,8 @@ export default function HeroCarousel() {
             key={i}
             onClick={() => setIndex(i)}
             style={{
-              width: 10,
-              height: 10,
+              width: "10px",
+              height: "10px",
               borderRadius: "50%",
               background: i === index ? "#fff" : "rgba(255,255,255,0.5)",
               cursor: "pointer",
@@ -155,6 +163,25 @@ export default function HeroCarousel() {
           />
         ))}
       </div>
+
+      {/* Mobile-specific adjustments */}
+      <style jsx>{`
+        @media screen and (max-width: 400px) {
+          img {
+            height: clamp(180px, 40vh, 320px);
+          }
+          h1 {
+            font-size: 1.4rem !important;
+          }
+          p {
+            font-size: 0.75rem !important;
+          }
+          a {
+            padding: 6px 12px !important;
+            font-size: 0.7rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
