@@ -61,69 +61,151 @@ export default function AuthPage() {
     }
   };
 
-  return (
+ return (
+  <div
+    style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "linear-gradient(135deg, #fdfbfb, #ebedee)",
+      padding: "20px",
+    }}
+  >
     <div
       style={{
-        maxWidth: "500px",
-        margin: "3rem auto",
-        padding: "25px",
-        backgroundColor: "#f0f4f8",
-        borderRadius: "12px",
-        boxShadow: "0 8px 25px rgba(0,0,0,0.1)",
+        width: "100%",
+        maxWidth: "420px",
+        background: "#fff",
+        borderRadius: "16px",
+        padding: "32px",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
       }}
     >
-      <h2 style={{ textAlign: "center", color: "#e74c3c", marginBottom: "25px" }}>
-        {isLogin ? "Login" : "Sign Up"}
+      <h2
+        style={{
+          textAlign: "center",
+          color: "#e74c3c",
+          marginBottom: "8px",
+          fontSize: "1.9rem",
+          fontWeight: 700,
+        }}
+      >
+        {isLogin ? "Welcome Back" : "Create Account"}
       </h2>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-        <label>
-          Phone:
+      <p
+        style={{
+          textAlign: "center",
+          color: "#777",
+          fontSize: "0.95rem",
+          marginBottom: "28px",
+        }}
+      >
+        {isLogin
+          ? "Login to continue receiving local alerts"
+          : "Sign up to receive real-time emergency alerts"}
+      </p>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "18px" }}
+      >
+        <div>
+          <label style={label}>Phone Number</label>
           <PhoneInput
             country={"cm"}
             value={user.phone}
             onChange={handlePhoneChange}
-            inputStyle={{ width: "100%" }}
+            inputStyle={input}
+            buttonStyle={{ border: "none", background: "transparent" }}
           />
-        </label>
+        </div>
 
         {!isLogin && (
-          <label>
-            Jurisdiction:
+          <div>
+            <label style={label}>Jurisdiction</label>
             <input
               type="text"
               name="jurisdiction"
               value={user.jurisdiction}
               onChange={handleChange}
+              placeholder="City, State, Country"
+              style={input}
               required
             />
-          </label>
+          </div>
         )}
 
-        <label>
-          Password:
+        <div>
+          <label style={label}>Password</label>
           <input
             type="password"
             name="password"
             value={user.password}
             onChange={handleChange}
+            placeholder="Enter password"
+            style={input}
             required
           />
-        </label>
+        </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            marginTop: "10px",
+            padding: "14px",
+            background: "#e74c3c",
+            color: "#fff",
+            border: "none",
+            borderRadius: "10px",
+            fontSize: "1rem",
+            fontWeight: 600,
+            cursor: loading ? "progress" : "pointer",
+            transition: "0.2s",
+          }}
+        >
+          {loading
+            ? "Please wait…"
+            : isLogin
+            ? "Login"
+            : "Create Account"}
         </button>
       </form>
 
-      {message && <p style={{ textAlign: "center", marginTop: 15 }}>{message}</p>}
+      {message && (
+        <p
+          style={{
+            marginTop: "18px",
+            textAlign: "center",
+            fontWeight: 500,
+            color: message.toLowerCase().includes("error") ? "#e74c3c" : "#27ae60",
+          }}
+        >
+          {message}
+        </p>
+      )}
 
-      <p style={{ textAlign: "center", marginTop: 10 }}>
-        {isLogin ? "No account?" : "Already registered?"}{" "}
-        <button onClick={() => setIsLogin(!isLogin)} style={{ color: "#e74c3c" }}>
-          {isLogin ? "Sign Up" : "Login"}
+      <div style={{ marginTop: "24px", textAlign: "center" }}>
+        <span style={{ color: "#555" }}>
+          {isLogin ? "New here?" : "Already have an account?"}
+        </span>{" "}
+        <button
+          onClick={() => setIsLogin(!isLogin)}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#e74c3c",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          {isLogin ? "Sign up" : "Login"}
         </button>
-      </p>
+      </div>
     </div>
-  );
+  </div>
+);
+
 }
