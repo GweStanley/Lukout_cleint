@@ -61,25 +61,24 @@ export default function HomePage() {
       </section>
 
       {/* Hero Section */}
-     <section
+<section
   className="hero"
   style={{
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
     maxWidth: "1000px",
     width: "100%",
     padding: "10px",
-    gap: "40px",
-    flexWrap: "wrap", // allows content to shrink gracefully
+    gap: "30px",
   }}
 >
   <div
     className="hero-media"
     style={{
-      flex: 1,
-      minWidth: "200px",
+      flex: "1 1 40%", // flexible width
+      minWidth: "150px",
       maxWidth: "45%",
     }}
   >
@@ -95,18 +94,19 @@ export default function HomePage() {
   <div
     className="hero-text"
     style={{
-      flex: 1,
-      minWidth: "200px",
-      maxWidth: "50%",
+      flex: "1 1 55%", // flexible width
+      minWidth: "150px",
+      maxWidth: "55%",
       opacity: 0,
       animation: "fadeInRight 1s forwards",
     }}
   >
     <h1
       style={{
-        fontSize: "2.5rem",
+        fontSize: "2rem",
         color: "#2c3e50",
-        marginBottom: "20px",
+        marginBottom: "15px",
+        lineHeight: "1.2",
       }}
     >
       Welcome to LukOut
@@ -114,10 +114,10 @@ export default function HomePage() {
 
     <p
       style={{
-        fontSize: "1.1rem",
+        fontSize: "0.95rem",
         color: "#555",
-        lineHeight: "1.6",
-        marginBottom: "25px",
+        lineHeight: "1.5",
+        marginBottom: "20px",
       }}
     >
       LukOut is your global security & emergency alert platform. Track real-time alerts,
@@ -130,19 +130,20 @@ export default function HomePage() {
       className="hero-actions"
       style={{
         display: "flex",
-        gap: "15px",
+        gap: "10px",
         flexWrap: "wrap",
       }}
     >
       <a
         href="/main/alerts"
         style={{
-          padding: "12px 25px",
+          padding: "10px 20px",
           backgroundColor: "#1cce9fff",
           color: "#fff",
           borderRadius: "8px",
           fontWeight: "600",
           textDecoration: "none",
+          fontSize: "0.9rem",
         }}
       >
         Act Now
@@ -150,37 +151,31 @@ export default function HomePage() {
     </div>
   </div>
 
-  {/* Inline media query styles for mobile */}
+  {/* Inline responsive adjustment for very small phones */}
   <style jsx>{`
-    @media screen and (max-width: 600px) {
-      .hero {
-        gap: 15px;
-      }
-
+    @media screen and (max-width: 400px) {
       .hero-media {
+        flex: 1 1 45%;
         max-width: 45%;
-        min-width: 150px;
       }
-
       .hero-text {
+        flex: 1 1 50%;
         max-width: 50%;
-        min-width: 150px;
       }
-
       .hero-text h1 {
-        font-size: 1.8rem !important;
+        font-size: 1.6rem !important;
       }
-
       .hero-text p {
-        font-size: 0.95rem !important;
+        font-size: 0.85rem !important;
       }
-
       .hero-actions a {
-        padding: 10px 20px !important;
+        padding: 8px 16px !important;
+        font-size: 0.8rem !important;
       }
     }
   `}</style>
 </section>
+
 
 
       {/* Dashboard */}
