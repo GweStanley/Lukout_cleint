@@ -70,16 +70,19 @@ export default function HomePage() {
     justifyContent: "center",
     maxWidth: "1000px",
     width: "100%",
-    padding: "10px",
+    padding: "15px",
     gap: "30px",
+    boxSizing: "border-box",
+    flexWrap: "nowrap", // ensure side-by-side layout
   }}
 >
+  {/* HERO MEDIA (Carousel) */}
   <div
     className="hero-media"
     style={{
-      flex: "1 1 40%",
-      minWidth: "150px",
+      flex: "0 0 clamp(180px, 45%, 400px)", // dynamic width
       maxWidth: "45%",
+      minWidth: "180px",
     }}
   >
     <ImageCarousel
@@ -89,45 +92,54 @@ export default function HomePage() {
         "/images/alert2.jpg",
       ]}
       style={{
-        width: "100%",        // carousel takes full width of container
-        height: "auto",       // scales images proportionally
+        width: "100%",
+        height: "auto",
       }}
       imageStyle={{
         width: "100%",
         height: "auto",
         objectFit: "contain",
+        borderRadius: "12px", // soft rounded images for comfort
       }}
       buttonStyle={{
-        padding: "10px 20px",
-        fontSize: "0.9rem",
+        padding: "clamp(6px, 2vw, 12px) clamp(12px, 4vw, 25px)",
+        fontSize: "clamp(0.75rem, 2vw, 1rem)",
+        borderRadius: "8px",
       }}
     />
   </div>
 
+  {/* HERO TEXT */}
   <div
     className="hero-text"
     style={{
-      flex: "1 1 55%",
-      minWidth: "150px",
+      flex: "1 1 clamp(180px, 55%, 500px)",
+      minWidth: "180px",
       maxWidth: "55%",
       opacity: 0,
       animation: "fadeInRight 1s forwards",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
     }}
   >
+    {/* Headline (Psychologically first: Attention) */}
     <h1
       style={{
-        fontSize: "2rem",
+        fontSize: "clamp(1.6rem, 3vw, 2.5rem)",
         color: "#2c3e50",
         marginBottom: "15px",
         lineHeight: "1.2",
+        fontWeight: 700,
       }}
     >
       Welcome to LukOut
     </h1>
 
+    {/* Supporting text (Inform, build trust) */}
     <p
       style={{
-        fontSize: "0.95rem",
+        fontSize: "clamp(0.85rem, 2vw, 1.1rem)",
         color: "#555",
         lineHeight: "1.5",
         marginBottom: "20px",
@@ -139,36 +151,44 @@ export default function HomePage() {
       emphasizes vigilance, community awareness, and fast response to potential threats.
     </p>
 
+    {/* Call-to-action (Highlight action, contrast colors) */}
     <div
       className="hero-actions"
       style={{
         display: "flex",
-        gap: "10px",
+        gap: "12px",
         flexWrap: "wrap",
       }}
     >
       <a
         href="/main/alerts"
         style={{
-          padding: "10px 20px",
-          backgroundColor: "#1cce9fff",
+          padding: "clamp(8px, 2vw, 14px) clamp(16px, 4vw, 28px)",
+          backgroundColor: "#1cce9f",
           color: "#fff",
           borderRadius: "8px",
-          fontWeight: "600",
+          fontWeight: 600,
           textDecoration: "none",
-          fontSize: "0.9rem",
+          fontSize: "clamp(0.8rem, 2vw, 1rem)",
+          transition: "all 0.2s ease-in-out",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#17b889")}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1cce9f")}
       >
         Act Now
       </a>
     </div>
   </div>
 
-  {/* Responsive adjustments for small screens */}
+  {/* RESPONSIVE MEDIA QUERY */}
   <style jsx>{`
     @media screen and (max-width: 400px) {
+      .hero {
+        gap: 15px;
+        padding: 10px;
+      }
       .hero-media {
-        flex: 1 1 45%;
+        flex: 0 0 45%;
         max-width: 45%;
       }
       .hero-text {
@@ -180,23 +200,24 @@ export default function HomePage() {
         height: auto !important;
       }
       .hero-text h1 {
-        font-size: 1.6rem !important;
+        font-size: 1.5rem !important;
       }
       .hero-text p {
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
       }
       .hero-actions a {
-        padding: 8px 16px !important;
-        font-size: 0.8rem !important;
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
       }
       /* Carousel buttons */
       .carousel-button {
         padding: 6px 12px !important;
-        font-size: 0.75rem !important;
+        font-size: 0.7rem !important;
       }
     }
   `}</style>
 </section>
+
 
 
 
