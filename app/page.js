@@ -35,8 +35,10 @@ export default function HomePage() {
         alignItems: "center",
         overflowX: "hidden",
       }}
-    >    {/* Continuous text carousel */}
+    >
+      {/* Continuous text carousel */}
       <section
+        ref={scrollRef}
         style={{
           width: "100%",
           overflow: "hidden",
@@ -46,7 +48,6 @@ export default function HomePage() {
           margin: "30px 0",
           whiteSpace: "nowrap",
         }}
-        ref={scrollRef}
       >
         <div style={{ display: "inline-block", paddingRight: "100%" }}>
           {Array(20)
@@ -56,8 +57,10 @@ export default function HomePage() {
             .join(" ")}
         </div>
       </section>
+
       {/* Hero Section */}
       <section
+        className="hero"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -65,12 +68,11 @@ export default function HomePage() {
           justifyContent: "center",
           maxWidth: "1000px",
           width: "100%",
-          padding: "10px 10px",
+          padding: "10px",
           gap: "40px",
         }}
       >
-        {/* 🚨 HERO CAROUSEL (REPLACED IMAGE ONLY) */}
-        <div style={{ flex: "1", minWidth: "250px" }}>
+        <div className="hero-media" style={{ flex: 1, minWidth: "250px" }}>
           <ImageCarousel
             images={[
               "/images/lookout.Logo.gif",
@@ -80,10 +82,10 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Summary */}
         <div
+          className="hero-text"
           style={{
-            flex: "1",
+            flex: 1,
             minWidth: "250px",
             opacity: 0,
             animation: "fadeInRight 1s forwards",
@@ -107,8 +109,7 @@ export default function HomePage() {
             emphasizes vigilance, community awareness, and fast response to potential threats.
           </p>
 
-          {/* Buttons */}
-          <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+          <div className="hero-actions" style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
             <a
               href="/main/alerts"
               style={{
@@ -122,14 +123,13 @@ export default function HomePage() {
             >
               Act Now
             </a>
-
           </div>
         </div>
       </section>
 
-
       {/* Dashboard */}
       <div
+        className="dashboard-wrap"
         style={{
           borderRadius: "12px",
           boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
@@ -166,16 +166,57 @@ export default function HomePage() {
         &copy; {new Date().getFullYear()} LukOut. All rights reserved.
       </footer>
 
-      {/* Animations */}
+      {/* Animations + MEDIA QUERIES */}
       <style>
         {`
           @keyframes fadeInLeft {
             from { opacity: 0; transform: translateX(-50px); }
             to { opacity: 1; transform: translateX(0); }
           }
+
           @keyframes fadeInRight {
             from { opacity: 0; transform: translateX(50px); }
             to { opacity: 1; transform: translateX(0); }
+          }
+
+          /* ================= MOBILE FIXES ================= */
+          @media (max-width: 768px) {
+            .hero {
+              flex-direction: column;
+              text-align: center;
+              gap: 25px;
+            }
+
+            .hero-text h1 {
+              font-size: 2rem;
+            }
+
+            .hero-text p {
+              font-size: 1rem;
+            }
+
+            .hero-actions {
+              justify-content: center;
+            }
+
+            .dashboard-wrap {
+              padding: 15px;
+              border-radius: 0;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .hero-text h1 {
+              font-size: 1.7rem;
+            }
+
+            .hero-text p {
+              font-size: 0.95rem;
+            }
+
+            section {
+              margin: 20px 0;
+            }
           }
         `}
       </style>

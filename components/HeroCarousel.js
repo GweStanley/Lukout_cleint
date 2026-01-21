@@ -29,7 +29,7 @@ const slides = [
     primaryBtn: { label: "Call Help", href: "/main/support" },
   },
     {
-    image: "/images/firstAidKit.jpg",
+    image: "/images/firstAidkit.jpg",
     title: "Are Your a First Respondent? ",
     text: "Access Basic First Aid Tips Here. Your little actions can save lives ",
     primaryBtn: { label: "First Aid Tips", href: "/main/support" },
