@@ -77,7 +77,7 @@ export default function HomePage() {
   <div
     className="hero-media"
     style={{
-      flex: "1 1 40%", // flexible width
+      flex: "1 1 40%",
       minWidth: "150px",
       maxWidth: "45%",
     }}
@@ -88,13 +88,26 @@ export default function HomePage() {
         "/images/alert1.jpg",
         "/images/alert2.jpg",
       ]}
+      style={{
+        width: "100%",        // carousel takes full width of container
+        height: "auto",       // scales images proportionally
+      }}
+      imageStyle={{
+        width: "100%",
+        height: "auto",
+        objectFit: "contain",
+      }}
+      buttonStyle={{
+        padding: "10px 20px",
+        fontSize: "0.9rem",
+      }}
     />
   </div>
 
   <div
     className="hero-text"
     style={{
-      flex: "1 1 55%", // flexible width
+      flex: "1 1 55%",
       minWidth: "150px",
       maxWidth: "55%",
       opacity: 0,
@@ -151,7 +164,7 @@ export default function HomePage() {
     </div>
   </div>
 
-  {/* Inline responsive adjustment for very small phones */}
+  {/* Responsive adjustments for small screens */}
   <style jsx>{`
     @media screen and (max-width: 400px) {
       .hero-media {
@@ -161,6 +174,10 @@ export default function HomePage() {
       .hero-text {
         flex: 1 1 50%;
         max-width: 50%;
+      }
+      .hero-media img {
+        width: 100% !important;
+        height: auto !important;
       }
       .hero-text h1 {
         font-size: 1.6rem !important;
@@ -172,9 +189,15 @@ export default function HomePage() {
         padding: 8px 16px !important;
         font-size: 0.8rem !important;
       }
+      /* Carousel buttons */
+      .carousel-button {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+      }
     }
   `}</style>
 </section>
+
 
 
 
