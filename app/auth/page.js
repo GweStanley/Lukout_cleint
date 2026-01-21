@@ -1,36 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import "react-phone-input-2/lib/style.css";
+
+/* ✅ Disable SSR for PhoneInput (CRITICAL FIX) */
+const PhoneInput = dynamic(() => import("react-phone-input-2"), {
+  ssr: false,
+});
+
+export const dynamic = "force-dynamic";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [user, setUser] = useState({ phone: "", password: "", jurisdiction: "" });
+  const [user, setUser] = useState({
+    phone: "",
+    password: "",
+    jurisdiction: "",
+  });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
-  const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
-
   const handlePhoneChange = (value, country) => {
-    setUser({
-      ...user,
+    setUser((prev) => ({
+      ...prev,
       phone: `+${value}`,
-      jurisdiction: isLogin ? user.jurisdiction : country.name,
-    });
+      jurisdiction: isLogin ? prev.jurisdiction : country?.name || "",
+    }));
   };
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     setLoading(true);
+    setMessage("");
 
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL + "/api/auth";
     const endpoint = isLogin ? "/login" : "/signup";
 
     try {
@@ -47,12 +58,9 @@ export default function AuthPage() {
         return;
       }
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
+      if (data.token) localStorage.setItem("token", data.token);
 
-      setMessage(isLogin ? "Login successful!" : "Signup successful! Redirecting...");
-      setTimeout(() => router.push("/"), 700);
+      router.push("/");
     } catch (err) {
       console.error(err);
       setMessage("Server connection error");
@@ -61,151 +69,141 @@ export default function AuthPage() {
     }
   };
 
- return (
-  <div
-    style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "linear-gradient(135deg, #fdfbfb, #ebedee)",
-      padding: "20px",
-    }}
-  >
-    <div
-      style={{
-        width: "100%",
-        maxWidth: "420px",
-        background: "#fff",
-        borderRadius: "16px",
-        padding: "32px",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-      }}
-    >
-      <h2
-        style={{
-          textAlign: "center",
-          color: "#e74c3c",
-          marginBottom: "8px",
-          fontSize: "1.9rem",
-          fontWeight: 700,
-        }}
-      >
-        {isLogin ? "Welcome Back" : "Create Account"}
-      </h2>
+  return (
+    <div style={container}>
+      <div style={card}>
+        <h2 style={title}>{isLogin ? "Login" : "Create Account"}</h2>
 
-      <p
-        style={{
-          textAlign: "center",
-          color: "#777",
-          fontSize: "0.95rem",
-          marginBottom: "28px",
-        }}
-      >
-        {isLogin
-          ? "Login to continue receiving local alerts"
-          : "Sign up to receive real-time emergency alerts"}
-      </p>
-
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "18px" }}
-      >
-        <div>
-          <label style={label}>Phone Number</label>
-          <PhoneInput
-            country={"cm"}
-            value={user.phone}
-            onChange={handlePhoneChange}
-            inputStyle={input}
-            buttonStyle={{ border: "none", background: "transparent" }}
-          />
-        </div>
-
-        {!isLogin && (
+        <form onSubmit={handleSubmit} style={form}>
           <div>
-            <label style={label}>Jurisdiction</label>
-            <input
-              type="text"
-              name="jurisdiction"
-              value={user.jurisdiction}
-              onChange={handleChange}
-              placeholder="City, State, Country"
-              style={input}
-              required
+            <label style={label}>Phone Number</label>
+            <PhoneInput
+              country="cm"
+              value={user.phone}
+              onChange={handlePhoneChange}
+              inputStyle={phoneInput}
             />
           </div>
-        )}
 
-        <div>
-          <label style={label}>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-            style={input}
-            required
-          />
-        </div>
+          {!isLogin && (
+            <div>
+              <label style={label}>Jurisdiction</label>
+              <input
+                name="jurisdiction"
+                value={user.jurisdiction}
+                onChange={handleChange}
+                required
+                style={input}
+              />
+            </div>
+          )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            marginTop: "10px",
-            padding: "14px",
-            background: "#e74c3c",
-            color: "#fff",
-            border: "none",
-            borderRadius: "10px",
-            fontSize: "1rem",
-            fontWeight: 600,
-            cursor: loading ? "progress" : "pointer",
-            transition: "0.2s",
-          }}
-        >
-          {loading
-            ? "Please wait…"
-            : isLogin
-            ? "Login"
-            : "Create Account"}
-        </button>
-      </form>
+          <div>
+            <label style={label}>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={handleChange}
+              required
+              style={input}
+            />
+          </div>
 
-      {message && (
-        <p
-          style={{
-            marginTop: "18px",
-            textAlign: "center",
-            fontWeight: 500,
-            color: message.toLowerCase().includes("error") ? "#e74c3c" : "#27ae60",
-          }}
-        >
-          {message}
+          <button disabled={loading} style={button}>
+            {loading ? "Please wait…" : isLogin ? "Login" : "Sign Up"}
+          </button>
+        </form>
+
+        {message && <p style={messageStyle}>{message}</p>}
+
+        <p style={switchText}>
+          {isLogin ? "No account?" : "Already have an account?"}{" "}
+          <button onClick={() => setIsLogin(!isLogin)} style={switchBtn}>
+            {isLogin ? "Sign Up" : "Login"}
+          </button>
         </p>
-      )}
-
-      <div style={{ marginTop: "24px", textAlign: "center" }}>
-        <span style={{ color: "#555" }}>
-          {isLogin ? "New here?" : "Already have an account?"}
-        </span>{" "}
-        <button
-          onClick={() => setIsLogin(!isLogin)}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#e74c3c",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          {isLogin ? "Sign up" : "Login"}
-        </button>
       </div>
     </div>
-  </div>
-);
-
+  );
 }
+
+/* ================= STYLES ================= */
+
+const container = {
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "#f2f6fc",
+  padding: "20px",
+};
+
+const card = {
+  width: "100%",
+  maxWidth: "420px",
+  background: "#fff",
+  padding: "30px",
+  borderRadius: "14px",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+};
+
+const title = {
+  textAlign: "center",
+  color: "#e74c3c",
+  marginBottom: "25px",
+};
+
+const form = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+};
+
+const label = {
+  fontWeight: "600",
+  marginBottom: "6px",
+  display: "block",
+};
+
+const input = {
+  width: "100%",
+  padding: "10px",
+  borderRadius: "8px",
+  border: "1px solid #ccc",
+};
+
+const phoneInput = {
+  width: "100%",
+  borderRadius: "8px",
+};
+
+const button = {
+  marginTop: "10px",
+  padding: "12px",
+  background: "#e74c3c",
+  color: "#fff",
+  border: "none",
+  borderRadius: "8px",
+  fontWeight: "600",
+  cursor: "pointer",
+};
+
+const messageStyle = {
+  marginTop: "15px",
+  textAlign: "center",
+  color: "#c0392b",
+};
+
+const switchText = {
+  textAlign: "center",
+  marginTop: "20px",
+};
+
+const switchBtn = {
+  background: "none",
+  border: "none",
+  color: "#e74c3c",
+  fontWeight: "600",
+  cursor: "pointer",
+};
