@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import "react-phone-input-2/lib/style.css";
-
-/* ✅ Disable SSR for PhoneInput (CRITICAL FIX) */
-const PhoneInput = dynamic(() => import("react-phone-input-2"), {
-  ssr: false,
-});
 
 export const dynamic = "force-dynamic";
 
 export default function AuthPage() {
+  const router = useRouter();
+
+  const [mounted, setMounted] = useState(false);
+  const [PhoneInput, setPhoneInput] = useState(null);
+
   const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
     phone: "",
@@ -22,7 +20,13 @@ export default function AuthPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
+  /* ✅ Load phone input ONLY in browser */
+  useEffect(() => {
+    setMounted(true);
+    import("react-phone-input-2").then((mod) => {
+      setPhoneInput(() => mod.default);
+    });
+  }, []);
 
   const handlePhoneChange = (value, country) => {
     setUser((prev) => ({
@@ -41,7 +45,7 @@ export default function AuthPage() {
     setLoading(true);
     setMessage("");
 
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL + "/api/auth";
+    const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
     const endpoint = isLogin ? "/login" : "/signup";
 
     try {
@@ -59,15 +63,16 @@ export default function AuthPage() {
       }
 
       if (data.token) localStorage.setItem("token", data.token);
-
       router.push("/");
-    } catch (err) {
-      console.error(err);
+    } catch {
       setMessage("Server connection error");
     } finally {
       setLoading(false);
     }
   };
+
+  /* 🚫 Prevent SSR render entirely */
+  if (!mounted || !PhoneInput) return null;
 
   return (
     <div style={container}>
@@ -81,7 +86,7 @@ export default function AuthPage() {
               country="cm"
               value={user.phone}
               onChange={handlePhoneChange}
-              inputStyle={phoneInput}
+              inputStyle={input}
             />
           </div>
 
@@ -171,11 +176,6 @@ const input = {
   padding: "10px",
   borderRadius: "8px",
   border: "1px solid #ccc",
-};
-
-const phoneInput = {
-  width: "100%",
-  borderRadius: "8px",
 };
 
 const button = {
