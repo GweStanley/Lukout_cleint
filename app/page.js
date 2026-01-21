@@ -61,73 +61,127 @@ export default function HomePage() {
       </section>
 
       {/* Hero Section */}
-      <section
-        className="hero"
+     <section
+  className="hero"
+  style={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    maxWidth: "1000px",
+    width: "100%",
+    padding: "10px",
+    gap: "40px",
+    flexWrap: "wrap", // allows content to shrink gracefully
+  }}
+>
+  <div
+    className="hero-media"
+    style={{
+      flex: 1,
+      minWidth: "200px",
+      maxWidth: "45%",
+    }}
+  >
+    <ImageCarousel
+      images={[
+        "/images/lookout.Logo.gif",
+        "/images/alert1.jpg",
+        "/images/alert2.jpg",
+      ]}
+    />
+  </div>
+
+  <div
+    className="hero-text"
+    style={{
+      flex: 1,
+      minWidth: "200px",
+      maxWidth: "50%",
+      opacity: 0,
+      animation: "fadeInRight 1s forwards",
+    }}
+  >
+    <h1
+      style={{
+        fontSize: "2.5rem",
+        color: "#2c3e50",
+        marginBottom: "20px",
+      }}
+    >
+      Welcome to LukOut
+    </h1>
+
+    <p
+      style={{
+        fontSize: "1.1rem",
+        color: "#555",
+        lineHeight: "1.6",
+        marginBottom: "25px",
+      }}
+    >
+      LukOut is your global security & emergency alert platform. Track real-time alerts,
+      respond quickly, and keep your community safe. Get instant notifications for
+      emergencies around you and stay informed 24/7. Inspired by Meerkat, LukOut
+      emphasizes vigilance, community awareness, and fast response to potential threats.
+    </p>
+
+    <div
+      className="hero-actions"
+      style={{
+        display: "flex",
+        gap: "15px",
+        flexWrap: "wrap",
+      }}
+    >
+      <a
+        href="/main/alerts"
         style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          maxWidth: "1000px",
-          width: "100%",
-          padding: "10px",
-          gap: "40px",
+          padding: "12px 25px",
+          backgroundColor: "#1cce9fff",
+          color: "#fff",
+          borderRadius: "8px",
+          fontWeight: "600",
+          textDecoration: "none",
         }}
       >
-        <div className="hero-media" style={{ flex: 1, minWidth: "250px" }}>
-          <ImageCarousel
-            images={[
-              "/images/lookout.Logo.gif",
-              "/images/alert1.jpg",
-              "/images/alert2.jpg",
-            ]}
-          />
-        </div>
+        Act Now
+      </a>
+    </div>
+  </div>
 
-        <div
-          className="hero-text"
-          style={{
-            flex: 1,
-            minWidth: "250px",
-            opacity: 0,
-            animation: "fadeInRight 1s forwards",
-          }}
-        >
-          <h1 style={{ fontSize: "2.5rem", color: "#2c3e50", marginBottom: "20px" }}>
-            Welcome to LukOut
-          </h1>
+  {/* Inline media query styles for mobile */}
+  <style jsx>{`
+    @media screen and (max-width: 600px) {
+      .hero {
+        gap: 15px;
+      }
 
-          <p
-            style={{
-              fontSize: "1.1rem",
-              color: "#555",
-              lineHeight: "1.6",
-              marginBottom: "25px",
-            }}
-          >
-            LukOut is your global security & emergency alert platform. Track real-time alerts,
-            respond quickly, and keep your community safe. Get instant notifications for
-            emergencies around you and stay informed 24/7. Inspired by Meerkat, LukOut
-            emphasizes vigilance, community awareness, and fast response to potential threats.
-          </p>
+      .hero-media {
+        max-width: 45%;
+        min-width: 150px;
+      }
 
-          <div className="hero-actions" style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
-            <a
-              href="/main/alerts"
-              style={{
-                padding: "12px 25px",
-                backgroundColor: "#1cce9fff",
-                color: "#fff",
-                borderRadius: "8px",
-                fontWeight: "600",
-                textDecoration: "none",
-              }}
-            >
-              Act Now
-            </a>
-          </div>
-        </div>
-      </section>
+      .hero-text {
+        max-width: 50%;
+        min-width: 150px;
+      }
+
+      .hero-text h1 {
+        font-size: 1.8rem !important;
+      }
+
+      .hero-text p {
+        font-size: 0.95rem !important;
+      }
+
+      .hero-actions a {
+        padding: 10px 20px !important;
+      }
+    }
+  `}</style>
+</section>
+
 
       {/* Dashboard */}
       <div
